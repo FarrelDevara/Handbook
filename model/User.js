@@ -11,8 +11,24 @@ class User{
         return users
     }
 
+    static async findOne(username){
+        // console.log(data, "<<<<<<<<<");
+        const find = await User.userCollection().findOne({
+            username
+        })
+        return find
+    }
+
+    static async findUserById(id){
+        // console.log(data, "<<<<<<<<<");
+        const find = await User.userCollection().findOne({
+            _id : id
+        })
+        return find
+    }
+
     static async createOne(data){
-        const {username} = data
+        // const {username} = data
         // let findUsername= await this.userCollection().findOne({username})
         // if(findUsername) throw new Error("unique error")
 
@@ -21,13 +37,9 @@ class User{
         return newUser
     }
 
-    static async findUser(username){
-        // console.log(data, "<<<<<<<<<");
-        const find = await User.userCollection().findOne({
-            username
-        })
-        return find
-    }
+    
+
+
 }
 
 module.exports = User
