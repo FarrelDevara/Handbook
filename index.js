@@ -1,6 +1,8 @@
 const { ApolloServer } = require ('@apollo/server');
 const { startStandaloneServer } = require ('@apollo/server/standalone');
 const User = require('./model/User');
+const { hashPassword, comparePassword } = require('./helpers/byrcrpt');
+const { signToken } = require('./helpers/jwt');
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -13,15 +15,45 @@ const typeDefs = `#graphql
   type User {
     _id: ID
     name: String
-    username: String
-    email: String
-    password: String
+    username: String!
+    email: String!
+    password: String!
   }
+
+  type Post {
+    _id: ID
+    content: String!
+    tags: [String]
+    imgUrl: String
+    authorId: ID!
+    comments: [Comments]
+    likes: [Likes]
+    createdAt: String
+    updatedAt: String
+  }
+
+  type Comments {
+    content: String!
+    username: String!
+    createdAt: String
+    updatedAt: String
+  }
+
+  type Likes{
+    username: String!
+    createdAt: String
+    updatedAt: String
+  }
+
 
   type Follow {
     _id: ID
     followingId: ID
-    follwerId: ID
+    follewerId: ID
+  }
+  
+  type Token {
+    access_token: String
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -29,11 +61,13 @@ const typeDefs = `#graphql
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     users: [User]
-    findUser(username: String): User 
+    findByUsername(username: String): User 
+    findByEmail(email: String): User 
   }
   
   type Mutation {
-    addUser(name: String,username: String,email: String,password: String) : User
+    Register(name: String,username: String,email: String,password: String) : User
+    Login(email: String, password: String) : Token
   }
 `;
 
@@ -45,20 +79,36 @@ const resolvers = {
             const users = await User.findAll()
             return users
         },
-        findUser: async(_,args) =>{
-            console.log(args);
-            const user = await User.findUser(args.username)
+        findByUsername: async(_,args) =>{
+            // console.log(args);
+            const user = await User.findByUsername(args.username)
             return user
-        }
+        },
+        findByEmail: async(_,args) =>{
+          // console.log(args);
+          const user = await User.findByEmail(args.email)
+          return user
+      }
     },
     Mutation: {
-        addUser: async (_, args) =>{
-            // console.log(args.username);
+        Register: async (_, args) =>{
+
+            const findEmail = await User.findByEmail(args.email)
+            if(findEmail) throw new Error("Email must be unique")
+
+            const findUsername = await User.findByUsername(args.username)
+            if(findUsername) throw new Error("Username must be unique")
+
+            if(args.password.length < 5) throw new Error("Password length must be 5 or more")
+
+            /////////////////////////////
+
+            const password = hashPassword(args.password)
             const newUser = {
                 name : args.name,
                 username : args.username,
                 email : args.email,
-                password : args.password
+                password
             }
 
             const result = await User.createOne(newUser)
@@ -66,7 +116,27 @@ const resolvers = {
             newUser._id = result.insertedId
 
             return newUser
-        }
+        },
+
+        Login: async (_, args) =>{
+          // console.log(args.username);
+          const findEmail = await User.findByEmail(args.email)
+          if(!findEmail) throw new Error("Invalid email/password")
+
+          const password = comparePassword(args.password, findEmail.password)
+          if(!password) throw new Error("Invalid email/password")
+
+          const payload = {
+            id : findEmail._id,
+            email : findEmail.email,
+          }
+          
+          const token = {
+            access_token: signToken(payload)
+          }
+
+          return token
+      }
     }
   };
 

@@ -11,10 +11,18 @@ class User{
         return users
     }
 
-    static async findOne(username){
+    static async findByUsername(username){
         // console.log(data, "<<<<<<<<<");
         const find = await User.userCollection().findOne({
             username
+        },{ projection: { password: 0 } } )
+        return find
+    }
+
+    static async findByEmail(email){
+        // console.log(email, "<<<<<<<<<");
+        const find = await User.userCollection().findOne({
+            email
         })
         return find
     }
@@ -28,11 +36,7 @@ class User{
     }
 
     static async createOne(data){
-        // const {username} = data
-        // let findUsername= await this.userCollection().findOne({username})
-        // if(findUsername) throw new Error("unique error")
-
-        console.log(data);
+        // console.log(data);
         const newUser = await User.userCollection().insertOne(data)
         return newUser
     }
