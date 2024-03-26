@@ -12,7 +12,7 @@ class Post{
     }
 
     static async createOne(data){
-        // console.log(data);
+        console.log(data), "<<<<<<<<<<<<";
         const newPost = await Post.postCollection().insertOne(data)
         return newPost
     }

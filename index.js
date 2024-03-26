@@ -4,12 +4,14 @@ const User = require('./model/User');
 
 const { verifyToken } = require('./helpers/jwt');
 const {typeDefs : typeDefsUser ,  resolvers : resolversUser} = require('./schemas/user')
+const {typeDefs : typeDefsPost ,  resolvers : resolversPost} = require('./schemas/post')
 
   // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
-    typeDefs: [typeDefsUser],
-    resolvers: [resolversUser],
+    typeDefs: [typeDefsUser, typeDefsPost],
+    resolvers: [resolversUser, resolversPost],
+    introspection : true
   });
   
   // Passing an ApolloServer instance to the `startStandaloneServer` function:

@@ -56,110 +56,115 @@ const typeDefs = `#graphql
 `;
 
 const resolvers = {
-    Query: {
-      // User
-        users: async () => {
-            const users = await User.findAll()
-            return users
-        },
-        findUserByUsername: async(_,args) =>{
-            // console.log(args);
-            const user = await User.findByUsername(args.username)
-            return user
-        },
-        findUserByEmail: async(_,args) =>{
-          // console.log(args);
-          const user = await User.findByEmail(args.email)
-          return user
-        },
-        findUserById: async(_,args) =>{
-          // console.log(args);
-          const user = await User.findByEmail(args.id)
-          return user
-        },
-        getDetail: async(_,args, contextValue) =>{
-            contextValue.auth()
-            console.log(args);
-            const user = await User.getDetail(args._id)
-            console.log(user);
-            return user
-        }
-      // Post
-       
-      
+  Query: {
+    // User
+    users: async () => {
+      const users = await User.findAll();
+      return users;
     },
-    Mutation: {
-        Register: async (_, args) =>{
+    findUserByUsername: async (_, args) => {
+      // console.log(args);
+      const user = await User.findByUsername(args.username);
+      return user;
+    },
+    findUserByEmail: async (_, args) => {
+      // console.log(args);
+      const user = await User.findByEmail(args.email);
+      return user;
+    },
+    findUserById: async (_, args) => {
+      // console.log(args);
+      const user = await User.findByEmail(args.id);
+      return user;
+    },
+    getDetail: async (_, args, contextValue) => {
+      contextValue.auth();
+      console.log(args);
+      const user = await User.getDetail(args._id);
+      console.log(user);
+      return user;
+    },
+    // Post
+  },
+  Mutation: {
+    Register: async (_, args) => {
 
-            const findEmail = await User.findByEmail(args.email)
-            if(findEmail) throw new Error("Email must be unique")
+      email = args.email.split("@");
+      if (email.length > 1) {
+        if (email[1].split(".").length <= 1) {
+            throw new Error("Invalid Email Format");
+        } 
+      } else {
+        throw new Error("Invalid Email Format");
+      }
 
-            const findUsername = await User.findByUsername(args.username)
-            if(findUsername) throw new Error("Username must be unique")
+      const findEmail = await User.findByEmail(args.email);
+      if (findEmail) throw new Error("Email must be unique");
 
-            if(args.password.length < 5) throw new Error("Password length must be 5 or more")
+      const findUsername = await User.findByUsername(args.username);
+      if (findUsername) throw new Error("Username must be unique");
 
-            /////////////////////////////
+      if (args.password.length < 5)
+        throw new Error("Password length must be 5 or more");
 
-            const password = hashPassword(args.password)
-            const newUser = {
-                name : args.name,
-                username : args.username,
-                email : args.email,
-                password
-            }
+      /////////////////////////////
 
-            const result = await User.createOne(newUser)
+      const password = hashPassword(args.password);
+      const newUser = {
+        name: args.name,
+        username: args.username,
+        email: args.email,
+        password,
+      };
 
-            newUser._id = result.insertedId
+      const result = await User.createOne(newUser);
 
-            return newUser
-        },
+      newUser._id = result.insertedId;
 
-        Login: async (_, args) =>{
+      return newUser;
+    },
 
-            if(!args.email) throw new Error("Email cannot be null")
-            if(!args.password) throw new Error("Password cannot be null")
+    Login: async (_, args) => {
+      if (!args.email) throw new Error("Email cannot be null");
+      if (!args.password) throw new Error("Password cannot be null");
 
-            const findUser = await User.findByEmail(args.email)
-            if(!findUser) throw new Error("Invaid email/password")
+      const findUser = await User.findByEmail(args.email);
+      if (!findUser) throw new Error("Invaid email/password");
 
-            const compare = comparePassword(args.password, findUser.password)
-            if(!compare) throw new Error("Invaid email/password")
-            /////////////////////////////
+      const compare = comparePassword(args.password, findUser.password);
+      if (!compare) throw new Error("Invaid email/password");
+      /////////////////////////////
 
-            const payload = {
-                id : findUser._id,
-                email : findUser.email,
-              }
-    
-              const token = {
-                access_token: signToken(payload)
-              }
-    
-              return token
-        },
+      const payload = {
+        id: findUser._id,
+        email: findUser.email,
+      };
 
+      const token = {
+        access_token: signToken(payload),
+      };
 
-        Follow: async(_,args,contextValue) =>{
-          const payload = await contextValue.auth()
-        //   console.log(payload);
+      return token;
+    },
 
-          const newFollow = {
-            followingId : args.followingId,
-            followerId : payload.id,
-            createdAt : new Date(),
-            updatedAt : new Date()
-        }
+    Follow: async (_, args, contextValue) => {
+      const payload = await contextValue.auth();
+      //   console.log(payload);
 
-        const result = await Follow.createOne(newFollow)
+      const newFollow = {
+        followingId: args.followingId,
+        followerId: payload.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-        newFollow._id = result.insertedId
+      const result = await Follow.createOne(newFollow);
 
-        return newFollow
-        }
-        
-    }
-  };
+      newFollow._id = result.insertedId;
 
-module.exports = { typeDefs, resolvers}
+      return newFollow;
+    },
+  },
+};
+
+module.exports = { typeDefs, resolvers };
