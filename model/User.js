@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb")
 const { database } = require("../config/mongo")
 
 class User{
@@ -30,7 +31,7 @@ class User{
     static async findUserById(id){
         // console.log(data, "<<<<<<<<<");
         const find = await User.userCollection().findOne({
-            _id : id
+            _id : new ObjectId(String(id))
         })
         return find
     }
@@ -40,9 +41,6 @@ class User{
         const newUser = await User.userCollection().insertOne(data)
         return newUser
     }
-
-    
-
 
 }
 

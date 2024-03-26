@@ -13,8 +13,8 @@ Silahkan setup project aplikasi server kamu:
 ### GraphQL - Apollo Server
 Buatlah Aplikasi server GraphQL dengan menggunakan Apollo Server yang memiliki fungsi sebagai berikut:
 - [ x ] Register (Mutation)
-- [ ] Login (Query)
-- [ ] Get Post (Query)
+- [ x ] Login (Query)
+- [ x ] Get Post (Query)
 - [ ] Add Post (Mutation)
 - [ ] Comment Post (Mutation)
 - [ ] Search User (Query)
@@ -25,8 +25,8 @@ Buatlah Aplikasi server GraphQL dengan menggunakan Apollo Server yang memiliki f
 ### MongoDB 1
 Buatlah fungsi/method pada aplikasi server GraphQL kamu yang menghubungkan dengan database MongoDB dengan fungsi sebagai berikut:
 - [ x ] Add user: untuk kebutuhan register
-- [ ] Get user by username dan password: untuk kebutuhan login
-- [ ] Search users by name/username: untuk kebutuhan mencari user berdasarkan nama atau username
+- [ x ] Get user by username dan password: untuk kebutuhan login
+- [ x ] Search users by name/username: untuk kebutuhan mencari user berdasarkan nama atau username
 - [ ] Follow User: untuk kebutuhan memfollow user
 - [ ] Get User by Id: untuk menampilkan profile user
 - [ ] Add Post: untuk menambahkan post baru
