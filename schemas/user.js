@@ -1,4 +1,6 @@
-const { hashPassword } = require("../helpers/byrcrpt");
+const { hashPassword, comparePassword } = require("../helpers/byrcrpt");
+const { signToken } = require("../helpers/jwt");
+const Follow = require("../model/Follow");
 const User = require("../model/User");
 
 const typeDefs = `#graphql
@@ -10,13 +12,22 @@ const typeDefs = `#graphql
     name: String
     username: String!
     email: String!
-    password: String!
+    password: String
+    FollowerData: [UserDetail]
+    FollowingData: [UserDetail]
+  }
+
+  type UserDetail{
+    _id:ID
+    name: String
+    username: String
+    email: String
   }
 
   type Follow {
     _id: ID
     followingId: ID
-    follewerId: ID
+    followerId: ID
     createdAt: String
     updatedAt: String
   }
@@ -33,13 +44,14 @@ const typeDefs = `#graphql
     findUserByUsername(username: String): User 
     findUserByEmail(email: String): User 
     findUserById(_id: ID): User
+    getDetail(_id: ID) : User
 
   }
   
   type Mutation {
     Register(name: String,username: String,email: String,password: String) : User
     Login(email: String, password: String) : Token
-    Follow(followingId: ID, follewerId: ID) : Follow
+    Follow(followingId: ID) : Follow
   }
 `;
 
@@ -65,6 +77,13 @@ const resolvers = {
           const user = await User.findByEmail(args.id)
           return user
         },
+        getDetail: async(_,args, contextValue) =>{
+            contextValue.auth()
+            console.log(args);
+            const user = await User.getDetail(args._id)
+            console.log(user);
+            return user
+        }
       // Post
        
       
@@ -96,10 +115,48 @@ const resolvers = {
 
             return newUser
         },
+
+        Login: async (_, args) =>{
+
+            if(!args.email) throw new Error("Email cannot be null")
+            if(!args.password) throw new Error("Password cannot be null")
+
+            const findUser = await User.findByEmail(args.email)
+            if(!findUser) throw new Error("Invaid email/password")
+
+            const compare = comparePassword(args.password, findUser.password)
+            if(!compare) throw new Error("Invaid email/password")
+            /////////////////////////////
+
+            const payload = {
+                id : findUser._id,
+                email : findUser.email,
+              }
+    
+              const token = {
+                access_token: signToken(payload)
+              }
+    
+              return token
+        },
+
+
         Follow: async(_,args,contextValue) =>{
-          contextValue.auth()
-          
-          console.log(args);
+          const payload = await contextValue.auth()
+        //   console.log(payload);
+
+          const newFollow = {
+            followingId : args.followingId,
+            followerId : payload.id,
+            createdAt : new Date(),
+            updatedAt : new Date()
+        }
+
+        const result = await Follow.createOne(newFollow)
+
+        newFollow._id = result.insertedId
+
+        return newFollow
         }
         
     }
