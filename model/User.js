@@ -27,7 +27,7 @@ class User {
         username,
       },
       {
-        $project: {
+        projection: {
           password: 0,
         },
       }
@@ -40,15 +40,9 @@ class User {
     const find = await User.userCollection().findOne(
       {
         email,
-      },
-      {
-        projection: {
-          password: 0,
-        },
       }
     );
 
-    console.log(find);
     return find;
   }
 
@@ -56,6 +50,11 @@ class User {
     // console.log(data, "<<<<<<<<<");
     const find = await User.userCollection().findOne({
       _id: new ObjectId(String(id)),
+    },
+    {
+      projection: {
+        password: 0,
+      },
     });
     return find;
   }

@@ -13,31 +13,91 @@ class Post {
     if (redisPost) {
       return JSON.parse(redisPost);
     } else {
-      const posts = await Post.postCollection().find().toArray();
-      await redis.set('posts', JSON.stringify(posts));
-      return posts;
+
+        const agg = [
+           {
+              $lookup: {
+                from: 'users', 
+                localField: 'authorId', 
+                foreignField: '_id', 
+                as: 'UserData'
+              }
+            }, {
+                $sort: {
+                  createdAt: -1
+                }
+              }
+          ]
+    
+        const cursor = Post.postCollection().aggregate(agg);
+    
+        const result = await cursor.toArray()
+        await redis.set('posts', JSON.stringify(result));
+        // console.log(result, "<<<<<<<<<<<<<<");
+        return result;
     }
+    
   }
 
   static async findById(id) {
     // console.log(id);
-    const posts = await Post.postCollection().findOne({
-      _id: new ObjectId(String(id)),
-    });
-    return posts;
+    const agg = [
+        {
+          $match: {
+            _id: new ObjectId(String(id))
+          }
+        }, {
+          $lookup: {
+            from: 'users', 
+            localField: 'authorId', 
+            foreignField: '_id', 
+            as: 'UserData'
+          }
+        }
+      ]
+
+    const cursor = Post.postCollection().aggregate(agg);
+
+    const result = await cursor.toArray()
+    // console.log(result.UserData, "<<<<<<<<<<<<<<");
+    return result[0]
   }
 
   static async createOne(data) {
-    // console.log(data), "<<<<<<<<<<<<";
     const newPost = await Post.postCollection().insertOne(data);
     await redis.del("posts")
     return newPost;
   }
 
-  static async createComment(data) {
-
-    await this.postCollection.updateOne(data)
+  static async createComment(data,postId) {
+    // console.log(data);
+    // console.log(postId);
+    
+    const findPost = await Post.findById(postId)
+    
+    const newComment = await Post.postCollection().updateOne({
+        _id : findPost._id
+    },{$push : {comments : data}})
+    await redis.del("posts")
+    // console.log(findPost);
+    return data;
   }
+
+  static async createLikes(data,postId) {
+    // console.log(data);
+    // console.log(postId);
+    
+    const findPost = await Post.findById(postId)
+    
+    const newComment = await Post.postCollection().updateOne({
+        _id : findPost._id
+    },{$push : {likes : data}})
+    await redis.del("posts")
+    // console.log(findPost);
+    return data;
+  }
+
+  
 }
 
 module.exports = Post;

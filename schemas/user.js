@@ -130,7 +130,7 @@ const resolvers = {
 
       const findUser = await User.findByEmail(args.email);
       if (!findUser) throw new Error("Invaid email/password");
-
+      
       const compare = comparePassword(args.password, findUser.password);
       if (!compare) throw new Error("Invaid email/password");
       /////////////////////////////
