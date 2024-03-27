@@ -12,7 +12,7 @@ const typeDefs = `#graphql
     tags: [String]
     imgUrl: String
     authorId: ID!
-    # comments: [Comments]
+    comments: [Comments]
     likes: [Likes]
     createdAt: String
     updatedAt: String
@@ -36,6 +36,7 @@ const typeDefs = `#graphql
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     getPost: [Post]
+    getPostById(_id: ID): Post
   }
   
   type Mutation {
@@ -50,6 +51,11 @@ const resolvers = {
             const posts = await Post.findAll()
             return posts
         },
+        getPostById: async (_,args) => {
+          // console.log(args);
+          const posts = await Post.findById(args._id)
+          return posts
+      },
     },
     Mutation:{
         addPost: async (_,args, contextValue) => {
@@ -60,7 +66,12 @@ const resolvers = {
                 content : args.content,
                 tags : args.tags,
                 imgUrl : args.imgUrl,
-                authorId : new ObjectId(String(user.id))
+                authorId : new ObjectId(String(user.id)),
+                comments : [],
+                likes : [],
+                createdAt : new Date(),
+                updatedAt : new Date()
+
             }
 
             const posts = await Post.createOne(data)

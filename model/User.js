@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { database } = require("../config/mongo");
+const redis = require("../config/redis");
 
 class User {
   static userCollection() {
@@ -7,8 +8,16 @@ class User {
   }
 
   static async findAll() {
-    const users = await User.userCollection().find().toArray();
-    return users;
+
+    const redisUser = await redis.get("users")
+    if (redisUser) {
+      return JSON.parse(redisUser)
+    }else{
+
+      const users = await User.userCollection().find().toArray();
+      await redis.set("users", JSON.stringify(users))
+      return users;
+    }
   }
 
   static async findByUsername(username) {
@@ -52,10 +61,10 @@ class User {
   }
 
   static async createOne(data) {
-    console.log(data, "<<<<<<<<<<<<<<DATA");
+    // console.log(data, "<<<<<<<<<<<<<<DATA");
 
-    console.log(data);
     const newUser = await User.userCollection().insertOne(data);
+    await redis.del("users")
     return newUser;
   }
 

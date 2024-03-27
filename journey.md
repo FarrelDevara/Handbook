@@ -17,7 +17,7 @@ Buatlah Aplikasi server GraphQL dengan menggunakan Apollo Server yang memiliki f
 - [ x ] Get Post (Query)
 - [ ] Add Post (Mutation)
 - [ ] Comment Post (Mutation)
-- [ ] Search User (Query)
+- [ x ] Search User (Query)
 - [ x ] Follow (Mutation)
 - [ x ] Get User (Query)
 - [ ] Like Post (Mutation)
@@ -27,11 +27,11 @@ Buatlah fungsi/method pada aplikasi server GraphQL kamu yang menghubungkan denga
 - [ x ] Add user: untuk kebutuhan register
 - [ x ] Get user by username dan password: untuk kebutuhan login
 - [ x ] Search users by name/username: untuk kebutuhan mencari user berdasarkan nama atau username
-- [ x ] Follow User: untuk kebutuhan memfollow user
+- [ x ] 8 User: untuk kebutuhan memfollow user
 - [ x ] Get User by Id: untuk menampilkan profile user
 - [ ] Add Post: untuk menambahkan post baru
-- [ ] Get Posts: mengambil daftar post berdasarkan yang terbaru
-- [ ] Get Post by Id: mengambil post berdasarkan id
+- [ x ] Get Posts: mengambil daftar post berdasarkan yang terbaru
+- [ x ] Get Post by Id: mengambil post berdasarkan id
 - [ ] Comment Post: untuk menambahkan komentar pada post
 - [ ] Like Post: untuk menambahkan like pada post
 
@@ -40,18 +40,18 @@ Buatlah fungsi/method pada aplikasi server GraphQL kamu yang menghubungkan denga
 
 ### MongoDB 2
 Buatlah lookup/relasi pada method/fungsi yang berhubungan dengan MongoDB yang sudah kamu buat dengan rincian sebagai berikut:
-- [ ] Get Post by Id: mengambil post berdasarkan id
+- [ x ] Get Post by Id: mengambil post berdasarkan id
   - [ ] Menampilkan nama/username user pada data komentar
 
-- [ ] Get User by Id: untuk menampilkan profile user
-  - [ ] Menampilkan list nama/username user follower
-  - [ ] Menampilkan list nama/username user following
+- [ x ] Get User by Id: untuk menampilkan profile user
+  - [ x ] Menampilkan list nama/username user follower
+  - [ x ] Menampilkan list nama/username user following
 
 
 ### Redis - Cache
 Implementasikan cache pada aplikasi GraphQL server yang sudah dibuat dengan detail sebagai berikut:
-- [ ] Implementasikan cache pada Get Post (Query)
-- [ ] Invalidate cache pada Add Post (Mutation)
+- [ x ] Implementasikan cache pada Get Post (Query)
+- [ x ] Invalidate cache pada Add Post (Mutation)
 
 ## Day 3
 ### React Native
