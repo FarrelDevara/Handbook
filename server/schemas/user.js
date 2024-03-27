@@ -1,7 +1,7 @@
-const { hashPassword, comparePassword } = require("../helpers/byrcrpt");
-const { signToken } = require("../helpers/jwt");
-const Follow = require("../model/Follow");
-const User = require("../model/User");
+const { hashPassword, comparePassword } = require('../helpers/byrcrpt');
+const { signToken } = require('../helpers/jwt');
+const Follow = require('../model/Follow');
+const User = require('../model/User');
 
 const typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
@@ -94,24 +94,22 @@ const resolvers = {
   },
   Mutation: {
     Register: async (_, args) => {
-
-      email = args.email.split("@");
+      email = args.email.split('@');
       if (email.length > 1) {
-        if (email[1].split(".").length <= 1) {
-            throw new Error("Invalid Email Format");
-        } 
+        if (email[1].split('.').length <= 1) {
+          throw new Error('Invalid Email Format');
+        }
       } else {
-        throw new Error("Invalid Email Format");
+        throw new Error('Invalid Email Format');
       }
 
       const findEmail = await User.findByEmail(args.email);
-      if (findEmail) throw new Error("Email must be unique");
+      if (findEmail) throw new Error('Email must be unique');
 
       const findUsername = await User.findByUsername(args.username);
-      if (findUsername) throw new Error("Username must be unique");
+      if (findUsername) throw new Error('Username must be unique');
 
-      if (args.password.length < 5)
-        throw new Error("Password length must be 5 or more");
+      if (args.password.length < 5) throw new Error('Password length must be 5 or more');
 
       /////////////////////////////
 
@@ -131,14 +129,14 @@ const resolvers = {
     },
 
     Login: async (_, args) => {
-      if (!args.email) throw new Error("Email cannot be null");
-      if (!args.password) throw new Error("Password cannot be null");
+      if (!args.email) throw new Error('Email cannot be null');
+      if (!args.password) throw new Error('Password cannot be null');
 
       const findUser = await User.findByEmail(args.email);
-      if (!findUser) throw new Error("Invaid email/password");
+      if (!findUser) throw new Error('Invaid email/password');
 
       const compare = comparePassword(args.password, findUser.password);
-      if (!compare) throw new Error("Invaid email/password");
+      if (!compare) throw new Error('Invaid email/password');
       /////////////////////////////
 
       const payload = {

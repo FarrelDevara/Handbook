@@ -17,7 +17,7 @@ const typeDefs = `#graphql
     likes: [Likes]
     createdAt: String
     updatedAt: String
-    UserData: [UserDetail]
+    UserData: UserDetail
   }
 
   type Comments {
@@ -120,7 +120,7 @@ const resolvers = {
         updatedAt : new Date()
       };
 
-      const post = await Post.createLikes(data, args.postId,find);
+      const post = await Post.createLikes(data, args.postId);
       return post;
     },
   },
