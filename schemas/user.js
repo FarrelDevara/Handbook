@@ -41,6 +41,7 @@ const typeDefs = `#graphql
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     users: [User]
+    searchByUsername(username: String): [User]
     findUserByUsername(username: String): User 
     findUserByEmail(email: String): User 
     findUserById(_id: ID): User
@@ -65,6 +66,11 @@ const resolvers = {
     findUserByUsername: async (_, args) => {
       // console.log(args);
       const user = await User.findByUsername(args.username);
+      return user;
+    },
+    searchByUsername: async (_, args) => {
+      // console.log(args);
+      const user = await User.searchByUsername(args.username);
       return user;
     },
     findUserByEmail: async (_, args) => {
@@ -130,7 +136,7 @@ const resolvers = {
 
       const findUser = await User.findByEmail(args.email);
       if (!findUser) throw new Error("Invaid email/password");
-      
+
       const compare = comparePassword(args.password, findUser.password);
       if (!compare) throw new Error("Invaid email/password");
       /////////////////////////////

@@ -120,7 +120,7 @@ const resolvers = {
         updatedAt : new Date()
       };
 
-      const post = await Post.createLikes(data, args.postId);
+      const post = await Post.createLikes(data, args.postId,find);
       return post;
     },
   },

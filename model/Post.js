@@ -70,25 +70,25 @@ class Post {
   }
 
   static async createComment(data,postId) {
-    // console.log(data);
-    // console.log(postId);
-    
+
     const findPost = await Post.findById(postId)
     
     const newComment = await Post.postCollection().updateOne({
         _id : findPost._id
     },{$push : {comments : data}})
     await redis.del("posts")
-    // console.log(findPost);
+
     return data;
   }
 
-  static async createLikes(data,postId) {
-    // console.log(data);
-    // console.log(postId);
-    
+  static async createLikes(data,postId,find) {
+
     const findPost = await Post.findById(postId)
-    
+
+    if (findPost.authorId.toString() === find._id.toString() ) {
+        throw new Error("Already Liked This Post")
+    }
+
     const newComment = await Post.postCollection().updateOne({
         _id : findPost._id
     },{$push : {likes : data}})

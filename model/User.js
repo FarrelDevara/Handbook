@@ -35,6 +35,21 @@ class User {
     return find;
   }
 
+  static async searchByUsername (username) {
+    // console.log(data, "<<<<<<<<<");
+    const find = await User.userCollection().find(
+      {
+        username : {$regex : username},
+      },
+      {
+        projection: {
+          password: 0,
+        },
+      }
+    ).toArray();
+    return find;
+  }
+
   static async findByEmail(email) {
     // console.log(email, "<<<<<<<<<");
     const find = await User.userCollection().findOne(
