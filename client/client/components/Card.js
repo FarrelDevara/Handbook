@@ -1,13 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import Card from '../components/Card';
 
-function HomeScreen({ navigation }) {
+function Card({ navigation }) {
   return (
-    <View className="justify-center flex-1 items-center">
+    <View>
       <StatusBar style="auto" />
-      <Text className="bg-red-500">HOME Page</Text>
-      <Card/>
+      <Text className='bg-red-500'>HOME Page</Text>
+      
     </View>
   );
 }
@@ -21,4 +20,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen;
+export default Card;

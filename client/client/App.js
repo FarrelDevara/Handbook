@@ -5,10 +5,6 @@ import StackNavigator from './navigators/StackNavigators'
 
 export default function App() {
   return (
-    // <View style={styles.container}>
-    //   <Text>Open up App.js to start working on your app! hai</Text>
-    //   <StatusBar style="auto" />
-    // </View>
     <NavigationContainer>
       <StackNavigator/>
     </NavigationContainer>
