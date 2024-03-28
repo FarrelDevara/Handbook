@@ -1,13 +1,51 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Card from '../components/Card';
+import { useQuery, gql } from '@apollo/client';
+
+const GET_POST = gql`
+query Query {
+  getPost {
+    _id
+    content
+    tags
+    imgUrl
+    authorId
+    comments {
+      content
+      username
+      createdAt
+      updatedAt
+    }
+    likes {
+      username
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+    UserData {
+      _id
+      name
+      username
+      email
+    }
+  }
+}
+`
 
 function HomeScreen({ navigation }) {
+  const {loading,error,data} = useQuery(GET_POST)
+  // console.log(data, "<<<<<<<<<<<<<<<<<<");
+  
   return (
     <View className="justify-center flex-1 items-center">
       <StatusBar style="auto" />
-      <Text className="bg-red-500">HOME Page</Text>
-      <Card/>
+      {/* <Text className="bg-red-500">HOME Page</Text> */}
+      {data?.getPost.map((item)=>(
+        <Card data={item}/>
+      ))
+      }
     </View>
   );
 }

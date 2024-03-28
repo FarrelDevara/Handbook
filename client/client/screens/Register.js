@@ -1,7 +1,42 @@
+import { gql, useMutation } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+
+const Register = gql`
+mutation Mutation($name: String, $username: String, $email: String, $password: String) {
+  Register(name: $name, username: $username, email: $email, password: $password) {
+    _id
+    name
+    username
+    email
+    password
+  }
+}
+`
 
 function RegisterScreen({ navigation }) {
+    const [name, setName] = useState("")
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    
+    const [RegisterFunction, {loading, error, data}] = useMutation(Register)
+
+    async function handleRegister(){
+        // console.log(name,username);
+       try {
+        await RegisterFunction({
+            variables : {
+                name,username,email,password
+            }
+        })
+        console.log('berhasil');
+       } catch (error) {
+        Alert.alert(error.message)
+        console.log(error);
+       }
+    }
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -11,7 +46,7 @@ function RegisterScreen({ navigation }) {
           style={styles.TextInput}
           placeholder="Full Name"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(name) => setName(name)}
         />
       </View>
       <View style={styles.inputView}>
@@ -19,7 +54,7 @@ function RegisterScreen({ navigation }) {
           style={styles.TextInput}
           placeholder="Username"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(username) => setUsername(username)}
         />
       </View>
       <View style={styles.inputView}>
@@ -39,8 +74,8 @@ function RegisterScreen({ navigation }) {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>Register</Text>
+      <TouchableOpacity style={styles.loginBtn} onPress={()=> handleRegister()}>
+        <Text style={styles.loginText}  >Register</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerBtn}>
         {/* <Text>Already have an account?</Text> */}
