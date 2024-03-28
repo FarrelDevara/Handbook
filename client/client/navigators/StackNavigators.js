@@ -4,12 +4,19 @@ import RegisterScreen from "../screens/Register"
 import HomeScreen from "../screens/Home"
 import TabNavigator from "./TabNavigator"
 import { useState } from "react"
-const Stack = createNativeStackNavigator(
+import { Text } from "react-native"
+import * as SecureStore from `expo-secure-store`
 
-)
+const Stack = createNativeStackNavigator()
 
 function StackNavigator(){
     const [isSignedIn, setIsSignedIn] = useState(false)
+    (async ()=>{
+        const access_token = await SecureStore.getItemAsync("access_token")
+        if(access_token){
+            setIsSignedIn = true
+        }
+    })
 
     return(
         <Stack.Navigator initialRouteName="TabNavigator">
@@ -20,9 +27,10 @@ function StackNavigator(){
                 <Stack.Screen name="Register" component={RegisterScreen}/>
                 </>
             ) : (
-                <Stack.Screen name="TabNavigator" component={TabNavigator}/>
+                <Stack.Screen name="TabNavigator" options={{title: null, headerRight:()=>{
+                    return <Text>Logout</Text>
+                }}}component={TabNavigator}/>
             )
-
             }
         </Stack.Navigator>
     )

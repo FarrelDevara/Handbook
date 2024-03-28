@@ -1,7 +1,40 @@
+import { gql } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
+import { useContext } from 'react';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import authContext from '../context/auth';
+import * as SecureStore from `expo-secure-store`
+
+const LOGIN = gql`
+mutation Mutation($email: String, $password: String) {
+  Login(email: $email, password: $password) {
+    access_token
+  }
+}
+`
 
 function LoginScreen({ navigation }) {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const { setIsSignedIn } = useContext(authContext)
+
+  const [LoginFunction, {loading, error, data}] = useMutation(LOGIN,{
+    onCompleted : async (data) => {
+      await SecureStore.setItemAsync("access_token", data?.login.access_token)
+      setIsSignedIn(true)
+    }
+  })
+
+  function handleLogin(){
+    LoginFunction({
+      variables :{
+        email,password
+      }
+    })
+  }
+
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -23,7 +56,7 @@ function LoginScreen({ navigation }) {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
         <Text style={styles.loginText}>Log In</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerBtn}>
