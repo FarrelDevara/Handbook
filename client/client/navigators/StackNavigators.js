@@ -3,20 +3,24 @@ import LoginScreen from "../screens/Login"
 import RegisterScreen from "../screens/Register"
 import HomeScreen from "../screens/Home"
 import TabNavigator from "./TabNavigator"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Text } from "react-native"
-import * as SecureStore from `expo-secure-store`
+import * as SecureStore from "expo-secure-store"
 
 const Stack = createNativeStackNavigator()
 
 function StackNavigator(){
     const [isSignedIn, setIsSignedIn] = useState(false)
-    (async ()=>{
-        const access_token = await SecureStore.getItemAsync("access_token")
-        if(access_token){
-            setIsSignedIn = true
+    
+    useEffect(() => {
+        const checkAccessToken = async () => {
+            const access_token = await SecureStore.getItemAsync("access_token")
+            if(access_token){
+                setIsSignedIn(true)
+            }
         }
-    })
+        checkAccessToken()
+    }, []) // Empty dependency array ensures the effect runs only once, similar to componentDidMount
 
     return(
         <Stack.Navigator initialRouteName="TabNavigator">

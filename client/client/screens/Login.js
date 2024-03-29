@@ -1,9 +1,9 @@
-import { gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import authContext from '../context/auth';
-import * as SecureStore from `expo-secure-store`
+import * as SecureStore from 'expo-secure-store'
 
 const LOGIN = gql`
 mutation Mutation($email: String, $password: String) {
@@ -17,12 +17,12 @@ function LoginScreen({ navigation }) {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const { setIsSignedIn } = useContext(authContext)
+  // const { setIsSignedIn } = useContext(authContext)
 
   const [LoginFunction, {loading, error, data}] = useMutation(LOGIN,{
     onCompleted : async (data) => {
       await SecureStore.setItemAsync("access_token", data?.login.access_token)
-      setIsSignedIn(true)
+      // setIsSignedIn(true)
     }
   })
 
