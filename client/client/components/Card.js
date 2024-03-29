@@ -12,7 +12,7 @@ function Card({data}) {
     // </View>
     <View className='bg-white shadow-md'>
       <Text style={styles.title}>{data.content}</Text>
-      {/* <Text style={styles.content}>asdasd</Text> */}
+      {/* <Text style={styles.content}>{data.comments}</Text> */}
     </View>
   );
 }
