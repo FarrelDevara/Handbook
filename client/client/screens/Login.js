@@ -13,7 +13,7 @@ mutation Mutation($email: String, $password: String) {
 }
 `
 
-function LoginScreen({ navigation }) {
+function LoginScreen({ navigation}) {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -22,7 +22,7 @@ function LoginScreen({ navigation }) {
   const [LoginFunction, {loading, error, data}] = useMutation(LOGIN,{
     onCompleted : async (data) => {
       await SecureStore.setItemAsync("access_token", data?.login.access_token)
-      // setIsSignedIn(true)
+      setIsSignedIn(true)
     }
   })
 

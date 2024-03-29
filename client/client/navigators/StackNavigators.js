@@ -22,8 +22,18 @@ function StackNavigator(){
         checkAccessToken()
     }, []) // Empty dependency array ensures the effect runs only once, similar to componentDidMount
 
+    // (async() =>{
+    //     const checkAccessToken = async () => {
+    //         const access_token = await SecureStore.getItemAsync("access_token")
+    //         if(access_token){
+    //             setIsSignedIn(true)
+    //         }
+    //     }
+    //     checkAccessToken()
+    // })();
+
     return(
-        <Stack.Navigator initialRouteName="TabNavigator">
+        <Stack.Navigator initialRouteName="TabNavigator" value={{ isSignedIn, setIsSignedIn}}>
             
             {!isSignedIn ? (
                 <>
