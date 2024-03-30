@@ -8,11 +8,12 @@ import { Text } from "react-native"
 import * as SecureStore from "expo-secure-store"
 import AddPostScreen from "../screens/AddPost"
 import PostDetail from "../screens/PostDetail"
+import LogoutButton from "../components/LogoutButton"
 
 const Stack = createNativeStackNavigator()
 
 function StackNavigator(){
-    const [isSignedIn, setIsSignedIn] = useState(true)
+    const [isSignedIn, setIsSignedIn] = useState(false)
     
     useEffect(() => {
         const checkAccessToken = async () => {
@@ -45,7 +46,7 @@ function StackNavigator(){
             ) : (
                 <>
                 <Stack.Screen name="TabNavigator" options={{title: null, headerRight:()=>{
-                    return <Text>Logout</Text>
+                    return <LogoutButton/>
                 }}}component={TabNavigator}/>
 
                 <Stack.Screen name="AddPost" component={AddPostScreen}/>

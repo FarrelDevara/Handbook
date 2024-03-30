@@ -4,7 +4,7 @@ import { useContext } from "react"
 import authContext from "../context/auth"
 
 function LogoutButton(){
-    const { setIsSignIn, IsSignIn} = useContext(authContext)
+    // const { setIsSignIn, IsSignIn} = useContext(authContext)
 
     return(
         <TouchableOpacity onPress={async () =>{
