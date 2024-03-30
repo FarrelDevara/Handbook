@@ -1,38 +1,40 @@
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const GET_USER = gql`
-    query GetPost($id: ID) {
-      getDetail(_id: $id) {
-        _id
-        name
-        username
-        email
-        password
-        FollowingData {
-          _id
-          name
-          username
-          email
-        }
-        FollowerData {
-          _id
-          name
-          username
-          email
-        }
-      }
+    query GetDetail($id: ID) {
+  getDetail(_id: $id) {
+    _id
+    name
+    username
+    email
+    password
+    FollowerData {
+      _id
+      name
+      username
+      email
     }
+    FollowingData {
+      _id
+      name
+      username
+      email
+    }
+  }
+}
   `;
 
 function ProfileScreen({ navigation }) {
 
 const {loading,error,data} = useQuery(GET_USER)
+// console.log(data);
+
   return (
-    <View style={styles.container}>
+    <View className="flex-1 justify-center items-center">
       <StatusBar style="auto" />
-      <Text style={styles.text}>PROFILE Page</Text>
+      <Text className="bg-blue-500 text-white p-2 rounded">PROFILE</Text>
     </View>
   );
 }

@@ -32,6 +32,7 @@ function RegisterScreen({ navigation }) {
             }
         })
         console.log('berhasil');
+        
        } catch (error) {
         Alert.alert(error.message)
         console.log(error);

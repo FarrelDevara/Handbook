@@ -1,44 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, Image, ScrollView } from 'react-native';
 
-function Card({data}) {
-    // console.log(data,"<<<<<<<<<<<<< di card");
+function Card({ data }) {
+  console.log(data, "<<<<<<<<<<<<< di card");
     
   return (
-    // <View className="justify-center flex-1 items-center">
-    //   <StatusBar style="auto" />
-    //   <Text className='bg-red-500'>Card</Text>
-      
-    // </View>
-    <View className='bg-white shadow-md'>
-      <Text style={styles.title}>{data.content}</Text>
-      {/* <Text style={styles.content}>{data.comments}</Text> */}
-    </View>
+      <View className="p-4">
+        <View className="bg-white rounded-lg p-4 shadow-md">
+          <Image source={{ uri: data.imgUrl }} className="w-full h-40 rounded-md mb-4" />
+          <View className="mb-4">
+            <Text className="text-xl font-bold mb-2">{data.content}</Text>
+            <Text className="text-gray-500 mb-2">{data.tags.join(', ')}</Text>
+            <View className="flex-row justify-between">
+              <Text className="text-blue-500">Likes: {data.likes.length}</Text>
+              <Text className="text-green-500">Comments: {data.comments.length}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
   );
 }
 
-const styles = StyleSheet.create({
-    card: {
-      backgroundColor: '#fff',
-      borderRadius: 10,
-      padding: 20,
-      marginVertical: 10,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 10,
-    },
-    content: {
-      fontSize: 16,
-    },
-  });
 export default Card;

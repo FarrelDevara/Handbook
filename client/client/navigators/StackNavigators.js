@@ -10,7 +10,7 @@ import * as SecureStore from "expo-secure-store"
 const Stack = createNativeStackNavigator()
 
 function StackNavigator(){
-    const [isSignedIn, setIsSignedIn] = useState(false)
+    const [isSignedIn, setIsSignedIn] = useState(true)
     
     useEffect(() => {
         const checkAccessToken = async () => {
