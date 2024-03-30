@@ -41,11 +41,7 @@ function PostDetail({ navigation }) {
   return (
     <View className="justify-center flex-1 items-center">
       <StatusBar style="auto" />
-      {/* <Text className="bg-red-500">HOME Page</Text> */}
-      {data?.getPost.map((item)=>(
-        <Card data={item}/>
-      ))
-      }
+      <Text>POST DETAIL</Text>
     </View>
   );
 }

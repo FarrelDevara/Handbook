@@ -60,7 +60,7 @@ function LoginScreen({ navigation}) {
         <Text style={styles.loginText}>Log In</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerBtn}>
-        <Text style={styles.registerText} onPress={() => navigation.navigate("Register")}>Register</Text>
+        <Text style={styles.registerText}AddPost>Register</Text>
       </TouchableOpacity>
     </View>
   );

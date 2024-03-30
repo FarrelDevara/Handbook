@@ -36,21 +36,30 @@ const GET_POST = gql`
 
 function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POST);
-  console.log(data, 'data di home <<<<<<<<<<<<<<<<<<');
+  // console.log(data, 'data di home <<<<<<<<<<<<<<<<<<');
   console.log(error);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="justify-center flex-1">
+      <View className="bg-white justify-center flex-1">
         <StatusBar style="auto" />
-        {/* <Text className="bg-red-500">HOME Page</Text> */}
+        <TouchableOpacity onPress={() =>{navigation.navigate("AddPost")}}>
+          <Text className=" rounded-lg p-4 shadow-md" >Add New Post</Text>
+        </TouchableOpacity>
+      </View>
 
+      <View className=" flex-1">
+   
         {data?.getPost.map((item, index) => (
           <Card
             data={item}
             key={index}
+            navigation={navigation}
           />
         ))}
+    
+        <StatusBar style="auto" />
+        {/* <Text className="bg-red-500">HOME Page</Text> */}
       </View>
     </ScrollView>
   );

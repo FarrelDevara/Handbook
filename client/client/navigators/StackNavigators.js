@@ -6,6 +6,8 @@ import TabNavigator from "./TabNavigator"
 import { useState, useEffect } from "react"
 import { Text } from "react-native"
 import * as SecureStore from "expo-secure-store"
+import AddPostScreen from "../screens/AddPost"
+import PostDetail from "../screens/PostDetail"
 
 const Stack = createNativeStackNavigator()
 
@@ -41,9 +43,15 @@ function StackNavigator(){
                 <Stack.Screen name="Register" component={RegisterScreen}/>
                 </>
             ) : (
+                <>
                 <Stack.Screen name="TabNavigator" options={{title: null, headerRight:()=>{
                     return <Text>Logout</Text>
                 }}}component={TabNavigator}/>
+
+                <Stack.Screen name="AddPost" component={AddPostScreen}/>
+                <Stack.Screen name="PostDetail" component={PostDetail}/>
+                </>
+                
             )
             }
         </Stack.Navigator>
