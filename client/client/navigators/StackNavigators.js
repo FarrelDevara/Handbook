@@ -9,11 +9,12 @@ import * as SecureStore from "expo-secure-store"
 import AddPostScreen from "../screens/AddPost"
 import PostDetail from "../screens/PostDetail"
 import LogoutButton from "../components/LogoutButton"
+import SearchScreen from "../screens/Search"
 
 const Stack = createNativeStackNavigator()
 
 function StackNavigator(){
-    const [isSignedIn, setIsSignedIn] = useState(false)
+    const [isSignedIn, setIsSignedIn] = useState(true)
     
     useEffect(() => {
         const checkAccessToken = async () => {
@@ -51,6 +52,7 @@ function StackNavigator(){
 
                 <Stack.Screen name="AddPost" component={AddPostScreen}/>
                 <Stack.Screen name="PostDetail" component={PostDetail}/>
+                <Stack.Screen name="Search" component={SearchScreen}/>
                 </>
                 
             )

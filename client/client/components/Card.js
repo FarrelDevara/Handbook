@@ -6,9 +6,20 @@ function Card({ data, navigation }) {
 
   return (
     <>
-      <TouchableOpacity onPress={()=>{navigation.navigate("PostDetail")}}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('PostDetail');
+        }}
+      >
         <View className="p-4">
           <View className="bg-white rounded-lg p-4 shadow-md">
+            <View className="mb-4">
+              {/* <Image 
+              source={{ uri: "https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg" }}
+              className="rounded-md"
+              /> */}
+              <Text>{data.UserData.username}</Text>
+            </View>
             <Image
               source={{ uri: data.imgUrl }}
               className="w-full h-40 rounded-md mb-4"
