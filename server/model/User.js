@@ -15,7 +15,7 @@ class User {
     //   return JSON.parse(redisUser);
     // } else {
       
-    //   return users;
+      return users;
     // }
   }
 
@@ -36,17 +36,6 @@ class User {
 
   static async searchByUsername(username) {
     // console.log(data, "<<<<<<<<<");
-    // const find = await User.userCollection().find(
-    //   {
-    //     username : {$regex : username},
-    //   },
-    //   {
-    //     projection: {
-    //       password: 0,
-    //     },
-    //   }
-    // ).toArray();
-    // return find;
 
     if (username) {
       const agg = [

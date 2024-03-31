@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+  require('dotenv').config()
+}
+
 const { ApolloServer } = require ('@apollo/server');
 const { startStandaloneServer } = require ('@apollo/server/standalone');
 const User = require('./model/User');
@@ -8,6 +12,8 @@ const {typeDefs : typeDefsPost ,  resolvers : resolversPost} = require('./schema
 
   // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
+const port = process.env.port || 4000
+
 const server = new ApolloServer({
     typeDefs: [typeDefsUser, typeDefsPost],
     resolvers: [resolversUser, resolversPost],
@@ -21,7 +27,7 @@ const server = new ApolloServer({
 
  (async () =>{
     const { url } = await startStandaloneServer(server, {
-        listen: { port: 4000 },
+        listen: { port },
 
         context: ({req,res}) =>{
           return{
