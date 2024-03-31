@@ -31,8 +31,9 @@ function RegisterScreen({ navigation }) {
                 name,username,email,password
             }
         })
-        console.log('berhasil');
-        
+        // console.log('berhasil');
+        Alert.alert("Register Success")
+        navigation.navigate("Login")
        } catch (error) {
         Alert.alert(error.message)
         console.log(error);
@@ -41,7 +42,10 @@ function RegisterScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.text}>Register Page</Text>
+      <Image
+        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Eo_circle_blue_letter-h.svg/2048px-Eo_circle_blue_letter-h.svg.png' }}
+        style={styles.image}
+      />
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -80,7 +84,7 @@ function RegisterScreen({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerBtn}>
         {/* <Text>Already have an account?</Text> */}
-        <Text className="bg-red" onPress={() => navigation.navigate("Login")}>Already have an account? Log in</Text>
+        <Text onPress={() => navigation.navigate("Login")}>Already have an account? Log in</Text>
       </TouchableOpacity>
     </View>
   );
@@ -97,6 +101,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     marginBottom: 40,
   },
   inputView: {
@@ -135,7 +142,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    backgroundColor: '#white',
 
   },
   registerText:{

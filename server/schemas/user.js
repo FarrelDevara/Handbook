@@ -79,14 +79,19 @@ const resolvers = {
       return user;
     },
     findUserById: async (_, args) => {
-      // console.log(args);
-      const user = await User.findByEmail(args.id);
+      console.log(args);
+      const user = await User.findUserById(args._id);
       return user;
     },
     getDetail: async (_, args, contextValue) => {
-      contextValue.auth();
-      console.log(args);
-      const user = await User.getDetail(args._id);
+      const dataUser = contextValue.auth();
+      console.log(dataUser);
+      let user;
+      if (!args._id) {
+        user = await User.getDetail(dataUser.id)
+      }else{
+         user = await User.getDetail(args._id);
+      }
       console.log(user);
       return user;
     },

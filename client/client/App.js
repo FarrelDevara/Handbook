@@ -8,16 +8,15 @@ import AuthContext from './context/auth';
 import { useState } from 'react';
 
 export default function App() {
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false);
   return (
-    <AuthContext.Provider value={{isSignedIn, setIsSignedIn}}>
-<ApolloProvider client={client}>
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    </ApolloProvider>
+    <AuthContext.Provider value={{ isSignedIn, setIsSignedIn }}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </ApolloProvider>
     </AuthContext.Provider>
-    
   );
 }
 

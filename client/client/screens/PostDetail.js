@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import Card from '../components/Card';
 import { useQuery, gql, useMutation } from '@apollo/client';
 import { AntDesign } from '@expo/vector-icons';
@@ -47,8 +47,20 @@ query GetPostById($_id: ID) {
 
 }`;
 
+ADD_COMMENT = gql`
+mutation Mutation($content: String, $postId: ID) {
+  addComment(content: $content, postId: $postId) {
+    content
+    username
+    createdAt
+    updatedAt
+  }
+}
+`
+
 function PostDetail({ navigation, route }) {
   const { _id } = route.params;
+  const [content, setContent] = useState('');
 
   const { loading, error, data } = useQuery(GET_DETAIL, {
     variables: {
@@ -56,11 +68,18 @@ function PostDetail({ navigation, route }) {
     },
   });
 
+  // LIKE
   const [AddLike] = useMutation(ADD_LIKES,{
-    refetchQueries: [GET_DETAIL]
+    refetchQueries: [GET_DETAIL],
+    onError: (error) =>{
+      Alert.alert('Error', error.message)
+    },
+    onCompleted: () => {
+      Alert.alert('Success', 'Liked this post');
+    }
   })
 
-  function handleInput() {
+  function handleInputLike() {
     AddLike({
       variables: {
         postId: _id,
@@ -68,9 +87,34 @@ function PostDetail({ navigation, route }) {
     });
   }
 
+  // COMMENT
+
+  const [AddComment] = useMutation(ADD_COMMENT,{
+    refetchQueries: [GET_DETAIL]
+  })
+
+  async function handleInputComment() {
+    try {
+      if (!content) {
+        Alert.alert("Isi Comment terlebih dahulu")
+      }else{
+        AddComment({
+          variables: {
+            content,
+            postId : _id
+          },
+        });
+      }
+    } catch (error) {
+      
+    }
+  }
+
+  
   return (
     <>
-      <View className="p-4">
+    <ScrollView>
+      <View className="p-4 w-full h-full">
         <View className="bg-white rounded-lg p-4 shadow-md mb-4">
           <View className="flex-row items-center mb-2">
             <Image
@@ -88,54 +132,67 @@ function PostDetail({ navigation, route }) {
           />
           <Text className="text-gray-500 mb-2">{data?.getPostById.tags.join(', ')}</Text>
           <View className="flex-row">
-            <Text className="text-blue-500">
-              <TouchableOpacity onPress={() => handleInput()}>
+            <Text className="">
+              <TouchableOpacity onPress={() => handleInputLike()}>
                 <AntDesign
                   name="like2"
                   size={24}
                   color="black"
                 />
               </TouchableOpacity>
-              {data?.getPostById.likes.length}
             </Text>
-            <Text className="text-green-500 ml-4 ">
+
+              <Text className="mt-1 ml-1 text-blue-500">{data?.getPostById.likes.length}</Text>
+            
+            <Text className=" ml-4 ">
               <FontAwesome
                 name="comment-o"
                 size={24}
                 color="black"
               />{' '}
-              {data?.getPostById.comments.length}
             </Text>
+            <Text className="ml-1 mt-1 text-blue-500">{data?.getPostById.comments.length}</Text>
           </View>
+          <View className="border-b-2 border-gray-300 mb-3 mt-3"/>
+        {/* add comments */}
+        <View className="flex-row mb-5">
+          <TextInput
+        className="border border-gray-400 rounded-lg p-1 w-4/6 mr-2 "
+        placeholder="Comment"
+        onChangeText={(text) => setContent(text)}
+      />
+      <TouchableOpacity
+        title="Comment"
+        className="bg-blue-500 rounded-lg p-2 px-2"
+        onPress={handleInputComment}
+      >
+        <Text className="text-white text-sm font-semibold">Comment</Text>
+      </TouchableOpacity>
         </View>
         {/* comments */}
-        <View>
-          <View className="flex-row items-center mb-2">
+        <View className="">
             {data?.getPostById.comments.map((item, index) => (
+          <View className="flex-row items-center mb-2">
               <>
                 <Image
                   source={{ uri: 'https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg' }}
                   className="w-8 h-8 rounded-full mr-3"
                   key={1}
                 />
-                <Text key={2}> {item.username} </Text>
-                <Text key={3}> {item.content}</Text>
+                <View className="border-gray-400 border rounded-lg p-1">
+                <Text key={2} className="font-bold text-l mb-1 "> {item.username} </Text>
+                <Text key={3} className="mb-1"> {item.content}</Text>
+                </View>
               </>
-            ))}
           </View>
+            ))}
         </View>
       </View>
+      </View>
+      </ScrollView>
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f2f2f2',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default PostDetail;

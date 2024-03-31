@@ -1,6 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, classNameSheet, ScrollView, Alert } from 'react-native';
 
 const GET_USER = gql`
@@ -27,24 +26,28 @@ const GET_USER = gql`
 }
   `;
 
-function ProfileScreen() {
+function DetailUserScreen({ route, navigation }) {
 
   // const { _id } = route.params
   // console.log(route.params,"<<< route");
 
-  const {loading,error,data} = useQuery(GET_USER)
+  const {loading,error,data} = useQuery(GET_USER,{
+    variables : {
+      id : route.params
+    }
+  })
 
-  console.log(data);
+  // console.log(data);
   return (
     <ScrollView>
-    <View className="flex-1 bg-white h-screen">
+    <View className="bg-white flex-1 h-screen">
       <StatusBar style="auto" />
-      <View className="bg-white p-6 rounded-lg  mb-4 w-full h-full">
+      <View className="bg-white p-6 rounded-lg">
       <Image
           source={{ uri: 'https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg' }}
           className="w-40 h-40 rounded-full mb-4"
         />
-      <View className="flex-row items-center">
+      <View className="flex flex-row items-center">
       <Text className="text-xl font-bold mb-2">{data?.getDetail.name}</Text>
       <Text className="text-gray-600 mb-2">({data?.getDetail.username})</Text>
       </View>
@@ -67,6 +70,7 @@ function ProfileScreen() {
           </View>
         ))}
       </View>
+      {/* <View className="bg-gray-300 h-full w-1 my-auto" /> */}
       {/* Following */}
       <View className="mr-4">
       <Text>Following: {data?.getDetail?.FollowingData?.length}</Text>
@@ -88,4 +92,4 @@ function ProfileScreen() {
 }
 
 
-export default ProfileScreen;
+export default DetailUserScreen;

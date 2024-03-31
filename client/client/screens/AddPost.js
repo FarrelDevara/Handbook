@@ -29,54 +29,20 @@ const ADD_POST = gql`
   }
 `;
 
-// const GET_POST = gql`
-// query Query($id: ID) {
-//   getPostById(_id: $id) {
-//     _id
-//     content
-//     tags
-//     imgUrl
-//     authorId
-//     comments {
-//       content
-//       username
-//       createdAt
-//       updatedAt
-//     }
-//     likes {
-//       username
-//       createdAt
-//       updatedAt
-//     }
-//     createdAt
-//     updatedAt
-//     UserData {
-//       _id
-//       name
-//       username
-//       email
-//     }
-//   }
-// }
-// `
-
 function AddPostScreen({ navigation }) {
   const [content, setContent] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [tags, setTags] = useState('');
 
   const [addPost, { loading, error, data }] = useMutation(ADD_POST, {
-    refetchQueries: [ GET_POST ],
-    onCompleted: async () => {
-      
-      navigation.navigate('Home');
-    },
+    refetchQueries: [ GET_POST ]
   });
 
   const handleSubmit = async () => {
     try {
       //loading
       await addPost({ variables: { content, imgUrl, tags: tags.split(',') } });
+      navigation.navigate('Home');
     } catch (error) {
       Alert.alert(error.message);
       console.log(error);
