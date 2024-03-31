@@ -6,7 +6,6 @@ import authContext from "../context/auth"
 function LogoutButton(){
     const { setIsSignedIn } = useContext(authContext)
    
-    
     return(
         <TouchableOpacity onPress={async () =>{
             await SecureStore.deleteItemAsync("access_token")

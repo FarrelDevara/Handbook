@@ -29,19 +29,46 @@ const ADD_POST = gql`
   }
 `;
 
+// const GET_POST = gql`
+// query Query($id: ID) {
+//   getPostById(_id: $id) {
+//     _id
+//     content
+//     tags
+//     imgUrl
+//     authorId
+//     comments {
+//       content
+//       username
+//       createdAt
+//       updatedAt
+//     }
+//     likes {
+//       username
+//       createdAt
+//       updatedAt
+//     }
+//     createdAt
+//     updatedAt
+//     UserData {
+//       _id
+//       name
+//       username
+//       email
+//     }
+//   }
+// }
+// `
+
 function AddPostScreen({ navigation }) {
   const [content, setContent] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [tags, setTags] = useState('');
 
   const [addPost, { loading, error, data }] = useMutation(ADD_POST, {
-    refetchQueries: [
-      GET_POST,
-    ],
+    refetchQueries: [ GET_POST ],
     onCompleted: async () => {
-      setContent('');
-      setImgUrl('');
-      setTags('');
+      
       navigation.navigate('Home');
     },
   });

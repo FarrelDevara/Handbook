@@ -3,7 +3,7 @@ import { View, Text, Button, Image, TextInput, TouchableOpacity, StyleSheet, Scr
 import Card from '../components/Card';
 import { useQuery, gql } from '@apollo/client';
 
-const GET_POST = gql`
+export const GET_POST = gql`
   query Query {
     getPost {
       _id
@@ -37,7 +37,7 @@ const GET_POST = gql`
 function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POST);
   // console.log(data, 'data di home <<<<<<<<<<<<<<<<<<');
-  console.log(error);
+  // console.log(error);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>

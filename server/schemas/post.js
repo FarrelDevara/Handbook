@@ -70,7 +70,7 @@ const resolvers = {
   Mutation: {
     addPost: async (_, args, contextValue) => {
       const user = contextValue.auth();
-      console.log(user);
+      // console.log(user);
 
       const data = {
         content: args.content,

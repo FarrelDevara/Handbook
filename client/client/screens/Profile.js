@@ -29,7 +29,7 @@ const GET_USER = gql`
 function ProfileScreen({ navigation }) {
 
 const {loading,error,data} = useQuery(GET_USER)
-// console.log(data);
+console.log(data,"profile");
 
   return (
     <View className="flex-1 justify-center items-center">

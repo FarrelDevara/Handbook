@@ -10,15 +10,13 @@ import AddPostScreen from "../screens/AddPost"
 import PostDetail from "../screens/PostDetail"
 import LogoutButton from "../components/LogoutButton"
 import SearchScreen from "../screens/Search"
-import authContext from "../context/auth"
+import AuthContext from "../context/auth"
 
 const Stack = createNativeStackNavigator()
 
-
-
 function StackNavigator(){
 
-    const { isSignedIn, setIsSignedIn } = useContext(authContext)
+    const { isSignedIn, setIsSignedIn } = useContext(AuthContext)
     
     useEffect(() => {
         const checkAccessToken = async () => {
@@ -28,20 +26,10 @@ function StackNavigator(){
             }
         }
         checkAccessToken()
-    }, []) // Empty dependency array ensures the effect runs only once, similar to componentDidMount
-
-    // (async() =>{
-    //     const checkAccessToken = async () => {
-    //         const access_token = await SecureStore.getItemAsync("access_token")
-    //         if(access_token){
-    //             setIsSignedIn(true)
-    //         }
-    //     }
-    //     checkAccessToken()
-    // })();
+    }, [])
 
     return(
-        <Stack.Navigator initialRouteName="TabNavigator" value={{ isSignedIn, setIsSignedIn}}>
+        <Stack.Navigator initialRouteName="TabNavigator">
             
             {!isSignedIn ? (
                 <>
@@ -50,7 +38,9 @@ function StackNavigator(){
                 </>
             ) : (
                 <>
-                <Stack.Screen name="TabNavigator" options={{title: null, headerRight:()=>{
+                <Stack.Screen name="TabNavigator" options={{title: null, 
+                headerLeft:()=>{return <Text className="text-blue-500 font-bold text-xl">Handbook</Text>}, 
+                headerRight:()=>{
                     return <LogoutButton/>
                 }}}component={TabNavigator}/>
 
