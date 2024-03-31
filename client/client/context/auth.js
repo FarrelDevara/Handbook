@@ -1,5 +1,8 @@
 import { createContext } from "react";
 
-const authContext = createContext()
+const AuthContext = createContext({
+    isSignedIn : false,
+    setIsSignedIn : () =>{}
+})
 
-export default authContext
+export default AuthContext

@@ -4,13 +4,13 @@ import { useContext } from "react"
 import authContext from "../context/auth"
 
 function LogoutButton(){
-    // const { setIsSingIn } = useContext(authContext)
+    const { setIsSignedIn } = useContext(authContext)
    
     
     return(
         <TouchableOpacity onPress={async () =>{
             await SecureStore.deleteItemAsync("access_token")
-            // setIsSignIn(false)
+            setIsSignedIn(false)
         }}>
             <Text>
                 Logout

@@ -18,7 +18,7 @@ function LoginScreen({ navigation}) {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  // const { setIsSignedIn } = useContext(AuthContext)
+  const { setIsSignedIn } = useContext(AuthContext)
   // console.log(email,password);
   
 
@@ -27,6 +27,9 @@ function LoginScreen({ navigation}) {
       try {
         // console.log(data);
         await SecureStore.setItemAsync("access_token", data?.Login.access_token)
+        // const get = await SecureStore.getItemAsync("access_token")
+        // console.log(get);
+        
         setIsSignedIn(true)
       } catch (error) {
         Alert.alert(error.message)

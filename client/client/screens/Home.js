@@ -41,7 +41,7 @@ function HomeScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="bg-white justify-center flex-1">
+      <View className="bg-white flex-1">
         <StatusBar style="auto" />
         <TouchableOpacity onPress={() =>{navigation.navigate("AddPost")}}>
           <Text className=" rounded-lg p-4 shadow-md" >Add New Post</Text>

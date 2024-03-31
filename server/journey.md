@@ -57,13 +57,13 @@ Implementasikan cache pada aplikasi GraphQL server yang sudah dibuat dengan deta
 ### React Native
 Buatlah aplikasi mobile React-Native dengan menggunakan expo. Aplikasi ini adalah client side dari challenge My Social Media App.
 Pada aplikasi ini kamu perlu membuat screen sebagai berikut:
-- [  ] Unauthenticate screen
+- [ x ] Unauthenticate screen
   - [ x ] Login Screen: Menampilkan form untuk login
   - [ x ] Register Screen: Menampilkan form untuk register
 
 - [ ] Authenticate screen
   - [ x ] Home screen: Menampilkan list post
-  - [ ] Create Post: Menampilkan form untuk menambahkan post baru
+  - [ x ] Create Post: Menampilkan form untuk menambahkan post baru
   - [ ] Post Detail Screen: Menampilkan post detail berdasarkan id dan form untuk komentar
   - [ ] Search Screen: Menampilkan form pencarian untuk mencari user (bisa digabung dengan screen lain)
   - [ ] Profile Screen: Menampilkan profile user berdasarkan id, serta menampilkan jumlah followings dan followers user.
@@ -77,9 +77,9 @@ Pada aplikasi ini kamu perlu membuat screen sebagai berikut:
 ### GraphQL - Apollo Client
 Lakukan komunikasi Aplikasi Mobile (react-native) menggunakan apollo client ke server GraphQL  yang sudah dibuat. Dan Implementasikan query dan mutation sesuai dengan kebutuhan.
 - [ x ] Register (Mutation)
-- [ ] Login (Query)
+- [ x ] Login (Query)
 - [ x ] Get Post (Query)
-- [ ] Add Post (Mutation)
+- [ x ] Add Post (Mutation)
 - [ ] Comment Post (Mutation)
 - [ ] Search User (Query)
 - [ ] Follow (Mutation)

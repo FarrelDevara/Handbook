@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 
 function Card({ data, navigation }) {
-  console.log(data, '<<<<<<<<<<<<< di card');
+  // console.log(data, '<<<<<<<<<<<<< di card');
 
   return (
     <>

@@ -3,18 +3,22 @@ import LoginScreen from "../screens/Login"
 import RegisterScreen from "../screens/Register"
 import HomeScreen from "../screens/Home"
 import TabNavigator from "./TabNavigator"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { Text } from "react-native"
 import * as SecureStore from "expo-secure-store"
 import AddPostScreen from "../screens/AddPost"
 import PostDetail from "../screens/PostDetail"
 import LogoutButton from "../components/LogoutButton"
 import SearchScreen from "../screens/Search"
+import authContext from "../context/auth"
 
 const Stack = createNativeStackNavigator()
 
+
+
 function StackNavigator(){
-    const [isSignedIn, setIsSignedIn] = useState(true)
+
+    const { isSignedIn, setIsSignedIn } = useContext(authContext)
     
     useEffect(() => {
         const checkAccessToken = async () => {

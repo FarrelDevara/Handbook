@@ -2,40 +2,43 @@ import { gql, useMutation } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { View, Text, Button, Image, TextInput, TouchableOpacity, classNameSheet, Alert } from 'react-native';
+import { GET_POST } from './Home';
 
 const ADD_POST = gql`
-mutation AddPost($content: String, $imgUrl: String, $tags: [String]) {
-addPost(content: $content, imgUrl: $imgUrl, tags: $tags) {
-  _id
-  content
-  tags
-  imgUrl
-  authorId
-  comments {
-    content
-    username
-    createdAt
-    updatedAt
+  mutation AddPost($content: String, $imgUrl: String, $tags: [String]) {
+    addPost(content: $content, imgUrl: $imgUrl, tags: $tags) {
+      _id
+      content
+      tags
+      imgUrl
+      authorId
+      comments {
+        content
+        username
+        createdAt
+        updatedAt
+      }
+      likes {
+        username
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
   }
-  likes {
-    username
-    createdAt
-    updatedAt
-  }
-  createdAt
-  updatedAt
-}
-}
-`
+`;
 
 function AddPostScreen({ navigation }) {
-
   const [content, setContent] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [tags, setTags] = useState('');
- 
+
   const [addPost, { loading, error, data }] = useMutation(ADD_POST, {
-    onCompleted: () => {
+    refetchQueries: [
+      GET_POST,
+    ],
+    onCompleted: async () => {
       setContent('');
       setImgUrl('');
       setTags('');
@@ -48,8 +51,8 @@ function AddPostScreen({ navigation }) {
       //loading
       await addPost({ variables: { content, imgUrl, tags: tags.split(',') } });
     } catch (error) {
-      Alert.alert(error.message)
-        console.log(error);
+      Alert.alert(error.message);
+      console.log(error);
     }
   };
 
@@ -61,27 +64,27 @@ function AddPostScreen({ navigation }) {
         className="border border-gray-400  rounded-lg p-2 w-4/5 mb-4"
         placeholder="Content"
         value={content}
-        onChangeText={text => setContent(text)}
+        onChangeText={(text) => setContent(text)}
       />
       <TextInput
         className="border border-gray-400 rounded-lg p-2 w-4/5 mb-4"
         placeholder="Image URL"
         value={imgUrl}
-        onChangeText={text => setImgUrl(text)}
+        onChangeText={(text) => setImgUrl(text)}
       />
       <TextInput
         className="border border-gray-400 rounded-lg p-2 w-4/5 mb-4"
         placeholder="Tags"
         value={tags}
-        onChangeText={text => setTags(text)}
+        onChangeText={(text) => setTags(text)}
       />
       <Button
         title="Add Post"
-        onPress={handleSubmit}        
+        onPress={handleSubmit}
+        disabled={!content || !imgUrl || !tags}
       />
     </View>
   );
 }
-
 
 export default AddPostScreen;
